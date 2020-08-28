@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.xanderye.tbautosign.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="cn.xanderye.tbautosign.entity.User">
+        <id column="uid" property="uid"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="token" property="token"/>
+        <result column="avatar" property="avatar"/>
+        <collection column="uid" property="tbUsers" select="cn.xanderye.tbautosign.mapper.TBUserMapper.selectTBUsersByUid"/>
+    </resultMap>
+
+    <resultMap id="NoTBUsersMap" type="cn.xanderye.tbautosign.entity.User">
+        <id column="uid" property="uid"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="token" property="token"/>
+        <result column="avatar" property="avatar"/>
+    </resultMap>
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="uid">
+        insert into user
+        (username,password,token)
+        values
+        (#{username},#{password},#{token})
+    </insert>
+
+    <select id="selectByUid" resultMap="BaseResultMap">
+        select * from user where uid=#{uid}
+    </select>
+    <select id="selectByUsername" resultMap="BaseResultMap">
+        select * from user where username=#{username}
+    </select>
+    <select id="selectByToken" resultMap="NoTBUsersMap">
+        select * from user where token=#{token}
+    </select>
+
+    <update id="updateUser">
+        update user set uid = #{uid}
+        <if test="password != null and password != ''">
+            ,password = #{password}
+        </if>
+        <if test="token != null and token != ''">
+            ,token = #{token}
+        </if>
+        <if test="avatar != null and avatar != ''">
+            ,avatar = #{avatar}
+        </if>
+        where uid = #{uid}
+    </update>
+</mapper>

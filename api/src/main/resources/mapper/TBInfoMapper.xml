@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.xanderye.tbautosign.mapper.TBInfoMapper">
+    <resultMap id="BaseResultMap" type="cn.xanderye.tbautosign.entity.TBInfo">
+        <id column="tid" property="tid"/>
+        <result column="tieba_id" property="tiebaId"/>
+        <result column="title" property="title"/>
+        <result column="cur_score" property="curScore"/>
+        <result column="level_id" property="levelId"/>
+        <result column="level_name" property="levelName"/>
+        <result column="status" property="status"/>
+        <association column="tbid" property="tbUser"
+                     select="cn.xanderye.tbautosign.mapper.TBUserMapper.selectByTidforTBInfo"/>
+    </resultMap>
+
+    <resultMap id="ForTBUserMap" type="cn.xanderye.tbautosign.entity.TBInfo">
+        <id column="tid" property="tid"/>
+        <result column="tieba_id" property="tiebaId"/>
+        <result column="title" property="title"/>
+        <result column="cur_score" property="curScore"/>
+        <result column="level_id" property="levelId"/>
+        <result column="level_name" property="levelName"/>
+        <result column="status" property="status"/>
+    </resultMap>
+
+    <insert id="insertTBInfos" useGeneratedKeys="true" keyProperty="tid">
+        insert into tbinfo
+        (tieba_id, title, cur_score, level_id, level_name, tbid)
+        values
+        (#{tiebaId},#{title},#{curScore},#{levelId},#{levelName},#{tbUser.tid})
+    </insert>
+
+    <update id="updateStatus">
+        update tbinfo
+        set status = 1
+        where tid=#{tid}
+    </update>
+
+    <update id="resetStatus">
+        update tbinfo
+        set status = 0
+        where status =1
+    </update>
+
+    <delete id="deleteTBInfo">
+      delete from tbinfo where tid=#{tid}
+    </delete>
+
+    <delete id="deleteTBInfosByTBid">
+      delete from tbinfo where tbid=#{tbid}
+    </delete>
+
+    <select id="selectByTid" resultMap="BaseResultMap">
+        select * from tbinfo where tid=#{tid}
+    </select>
+
+    <select id="selectTBInfosByTbUserId" resultMap="ForTBUserMap">
+        select * from tbinfo where tbid=#{tbUserId}
+    </select>
+
+    <select id="selectTBInfosByTBidForSign" resultMap="BaseResultMap">
+        select * from tbinfo where tbid=#{tbid}
+    </select>
+
+    <select id="selectAllTBInfosByStatus" resultMap="BaseResultMap">
+        select * from tbinfo where status = 0
+    </select>
+</mapper>

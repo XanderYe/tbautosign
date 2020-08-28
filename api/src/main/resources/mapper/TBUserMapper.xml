@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.xanderye.tbautosign.mapper.TBUserMapper">
+    <resultMap id="BaseResultMap" type="cn.xanderye.tbautosign.entity.TBUser">
+        <id column="tid" property="tid"/>
+        <result column="BDUSS" property="BDUSS"/>
+        <result column="baidu_id" property="baiduId"/>
+        <result column="baidu_name" property="baiduName"/>
+        <result column="uid" property="uid"/>
+    </resultMap>
+
+    <select id="selectByTid" resultMap="BaseResultMap">
+      select * from tb_user where tid=#{tid}
+    </select>
+
+    <select id="selectByTidforTBInfo" resultMap="BaseResultMap">
+      select tid,baidu_id,baidu_name,BDUSS from tb_user where tid=#{tid}
+    </select>
+
+    <insert id="insertTBUser" useGeneratedKeys="true" keyProperty="tid">
+        insert into tb_user
+        (BDUSS,baidu_id,baidu_name,uid)
+         values
+         (#{BDUSS},#{baiduId},#{baiduName},#{uid})
+    </insert>
+
+    <delete id="deleteByTid">
+        delete from tb_user where tid=#{tid}
+    </delete>
+
+    <select id="selectTBUsersByUid" resultMap="BaseResultMap">
+        select * from tb_user where uid=#{uid}
+    </select>
+
+    <select id="selectByBaiduId" resultMap="BaseResultMap">
+        select * from tb_user where baidu_id=#{baiduId} for update
+    </select>
+
+    <update id="updateTBUser">
+        update tb_user set BDUSS = #{BDUSS} where tid=#{tid}
+    </update>
+</mapper>
