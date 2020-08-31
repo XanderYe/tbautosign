@@ -29,6 +29,7 @@ export const router = new Router({
       name: 'tieba',
       component: Main,
       title: "贴吧管理",
+      icon: "settings",
       children: [
         {
           path: 'id',
@@ -55,6 +56,7 @@ export const router = new Router({
       name: 'tool',
       component: Main,
       title: "小工具",
+      icon: "build",
       children: [
         {
           path: 'danmu',

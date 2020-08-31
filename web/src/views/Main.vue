@@ -37,7 +37,7 @@
         <mu-list-item button nested :open="openItem === item.title"
                       @toggle-nested="openItem = arguments[0] ? item.title : ''" v-for="item in navList" :key="item.path">
           <mu-list-item-action>
-            <mu-icon value="settings"></mu-icon>
+            <mu-icon :value="item.icon"></mu-icon>
           </mu-list-item-action>
           <mu-list-item-title>{{item.title}}</mu-list-item-title>
           <mu-list-item-action>
@@ -485,8 +485,6 @@
             this.$store.commit("setUser", user);
             // 重新绑定用户弹窗
             this.$nextTick(() => {
-              console.log(this.$refs.avatarButton)
-              console.log(this.$refs.avatarButton.$el)
               //绑定菜单弹出元素
               this.userMenuTrigger = this.$refs.avatarButton.$el;
             })
