@@ -2,7 +2,7 @@
   <mu-container>
     <mu-flex><h2>输入B站链接</h2></mu-flex>
     <mu-flex>支持链接类型：</mu-flex>
-    <mu-flex>https://www.bilibili.com/bangumi/play/epxxxxxx、https://www.bilibili.com/video/avxxxxxx</mu-flex>
+    <mu-flex>https://www.bilibili.com/bangumi/play/epxxxxxx、https://www.bilibili.com/video/avxxxxxx、https://www.bilibili.com/video/BVxxxxxx</mu-flex>
     <mu-form :model="linkForm" ref="linkForm" label-position="top" label-width="100">
       <mu-form-item prop="url" label="请输入B站链接" :rules="linkRules">
         <mu-text-field v-model="linkForm.url" placeholder="请输入B站链接"></mu-text-field>
