@@ -54,4 +54,13 @@ public interface UserService {
      * @date 2020/8/27
      */
     void updateUser(User user);
+
+    /**
+     * 根据用户名查找
+     * @param username
+     * @return cn.xanderye.tbautosign.entity.User
+     * @author yezhendong
+     * @date 2020/8/31
+     */
+    User findUserByUsername(String username);
 }

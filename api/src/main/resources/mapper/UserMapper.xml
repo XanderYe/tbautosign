@@ -19,9 +19,9 @@
     </resultMap>
     <insert id="insertUser" useGeneratedKeys="true" keyProperty="uid">
         insert into user
-        (username,password,token)
+        (username, password, nickname, token, avatar)
         values
-        (#{username},#{password},#{token})
+        (#{username}, #{password}, #{nickname}, #{token}, #{avatar})
     </insert>
 
     <select id="selectByUid" resultMap="BaseResultMap">
@@ -47,4 +47,8 @@
         </if>
         where uid = #{uid}
     </update>
+
+    <select id="findUserByUsername" resultMap="BaseResultMap">
+        select * from user where username = #{username}
+    </select>
 </mapper>

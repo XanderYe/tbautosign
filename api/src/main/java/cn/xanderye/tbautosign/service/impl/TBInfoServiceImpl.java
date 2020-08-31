@@ -90,15 +90,16 @@ public class TBInfoServiceImpl implements TBInfoService {
     }
 
     @Override
-    public void signByTbid(long tbid) {
-        List<TBInfo> tbInfos=selectTBInfosByTBidForSign(tbid);
+    public void signByTbUserId(Long tbUserId, Long tid) {
+        List<TBInfo> tbInfos=selectTBInfosByTBidForSign(tbUserId);
         if(tbInfos!=null){
             for(TBInfo tbInfo:tbInfos){
-                System.out.println(tbInfo.toString());
-                String result=TBUtil.DoSign_Client(tbInfo.getTbUser().getBDUSS(),tbInfo.getTitle(),"1");
-                log.info("result={}",result);
-                if(result.equals(TBResult.YELLO.getName())||result.equals(TBResult.RED.getName())||result.equals(TBResult.BB.getName())){
-                    changeStatus(tbInfo.getTid());
+                if (tid == null || tid.equals(tbInfo.getTid())) {
+                    String result=TBUtil.DoSign_Client(tbInfo.getTbUser().getBDUSS(),tbInfo.getTitle(),"1");
+                    log.info("result={}",result);
+                    if(result.equals(TBResult.YELLO.getName())||result.equals(TBResult.RED.getName())||result.equals(TBResult.BB.getName())){
+                        changeStatus(tbInfo.getTid());
+                    }
                 }
             }
         }

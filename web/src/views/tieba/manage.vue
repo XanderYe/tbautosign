@@ -3,9 +3,10 @@
     <mu-tabs inverse color="primary" indicator-color="secondary"  center :value.sync="tabIndex">
       <mu-tab v-for="tbuser in tbuserList" :key="tbuser.tid" @change="changeTab(tbuser)">{{tbuser.baiduName}}</mu-tab>
     </mu-tabs>
+    <mu-button color="secondary" @click="refresh">刷新贴吧</mu-button>
+    <mu-button color="secondary" @click="sign">{{signBtnLoading ? '签到中' : '一键签到'}}</mu-button>
     <mu-data-table stripe :columns="columns" :sort.sync="sort" @sort-change="handleSortChange" :data="tbinfoList" style="margin-top: 16px;">
       <template slot-scope="scope">
-        <td>{{scope.row.tid}}</td>
         <td>{{scope.row.tiebaId}}</td>
         <td>{{scope.row.title}}</td>
         <td>{{scope.row.curScore}}</td>
@@ -13,12 +14,16 @@
         <td>{{scope.row.levelName}}</td>
         <td :class="scope.row.status ? 'signed' : 'not-sign'">{{scope.row.status ? "已签" : "未签"}}</td>
         <td>
-          <mu-button icon small color="primary" @click="">
-            <mu-icon value="done"></mu-icon>
-          </mu-button>
-          <mu-button icon small color="red" @click="">
-            <mu-icon value="delete"></mu-icon>
-          </mu-button>
+          <mu-tooltip content="签到">
+            <mu-button icon small color="primary" @click="sign(scope.row.tid)">
+              <mu-icon value="done"></mu-icon>
+            </mu-button>
+          </mu-tooltip>
+          <mu-tooltip content="删除">
+            <mu-button icon small color="red" @click="openDeleteModal(scope.row.tid)">
+              <mu-icon value="delete"></mu-icon>
+            </mu-button>
+          </mu-tooltip>
         </td>
       </template>
     </mu-data-table>
@@ -26,6 +31,12 @@
       <mu-pagination raised circle :page-size="rows" :total="total" :current.sync="page"
                      @change="getTbInfoList"></mu-pagination>
     </mu-flex>
+    <mu-dialog title="提示" width="400" max-width="80%" :esc-press-close="false" :overlay-close="false"
+               :open.sync="deleteModal">
+      是否确认删除？
+      <mu-button slot="actions" flat color="primary" @click="deleteModal = false">取消</mu-button>
+      <mu-button slot="actions" flat color="primary" @click="deleteConfirm">确认</mu-button>
+    </mu-dialog>
   </mu-container>
 </template>
 
@@ -45,10 +56,6 @@
         },
         tbinfoList: [],
         columns: [
-          {
-            title: "ID",
-            name: "tid"
-          },
           {
             title: "贴吧ID",
             name: "tiebaId"
@@ -86,7 +93,10 @@
         },
         page: 1,
         rows: 20,
-        total: 0
+        total: 0,
+        signBtnLoading: false,
+        deleteModal: false,
+        deleteId: null
       }
     },
     methods: {
@@ -125,6 +135,56 @@
       },
       handleSortChange ({name, order}) {
         this.tbinfoList = this.tbinfoList.sort((a, b) => order === 'asc' ? a[name] - b[name] : b[name] - a[name]);
+      },
+      refresh() {
+        this.$requests.post("/tbinfo/refresh", {
+          tbUserId: this.tbuser.tid
+        }).then(res => {
+          if (res.data.code === 0) {
+            this.$snackbar({message: "刷新成功"});
+            this.getTbInfoList();
+          } else {
+            this.$snackbar({message: res.data.msg});
+          }
+        })
+      },
+      sign(tid) {
+        tid = parseFloat(tid);
+        if (!tid) {
+          this.signBtnLoading = true;
+        }
+        console.log(tid);
+        this.$requests.post("/tbinfo/sign", {
+          tbUserId: this.tbuser.tid,
+          tid: !!tid ? tid : null
+        }).then(res => {
+          if (res.data.code === 0) {
+            this.$snackbar({message: "签到成功"});
+            this.getTbInfoList();
+          } else {
+            this.$snackbar({message: res.data.msg});
+          }
+          if (!tid) {
+            this.signBtnLoading = false;
+          }
+        })
+      },
+      openDeleteModal(tid) {
+        this.deleteId = tid;
+        this.deleteModal = true;
+      },
+      deleteConfirm() {
+        this.$requests.post("/tbinfo/delete", {
+          tid: this.deleteId
+        }).then(res => {
+          if (res.data.code === 0) {
+            this.$snackbar({message: "删除成功"});
+            this.deleteModal = false;
+            this.getTbInfoList();
+          } else {
+            this.$snackbar({message: res.data.msg});
+          }
+        })
       }
     },
     mounted() {

@@ -85,12 +85,13 @@ public interface TBInfoService {
 
     /**
      * 一键签到指定帐号
-     * @param tbid
+     * @param tbUserId
+     * @param tid
      * @return void
      * @author yezhendong
      * @date 2020/8/27
      */
-    void signByTbid(long tbid);
+    void signByTbUserId(Long tbUserId, Long tid);
 
     /**
      * 删除指定贴吧信息

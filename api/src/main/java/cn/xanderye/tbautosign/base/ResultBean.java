@@ -1,13 +1,18 @@
 package cn.xanderye.tbautosign.base;
 
+import cn.xanderye.tbautosign.enums.ErrorCode;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
 /**
- * Created by Xander on 2018-11-05.
+ *
+ * @author 叶振东
+ * @date 2019-01-10
  */
 @Data
+@Accessors(chain = true)
 public class ResultBean<T> implements Serializable {
     private static final long serialVersionUID = 1L;
     private String msg = "success";
@@ -27,4 +32,24 @@ public class ResultBean<T> implements Serializable {
         this.data = data;
     }
 
+    /**
+     * 成功
+     * @return ResultBean
+     * @author yezhendong
+     * @date 2019/9/16
+     */
+    public static <T> ResultBean success(T data) {
+        return new ResultBean<T>().setData(data);
+    }
+
+    /**
+     * 失败
+     * @param errorCode
+     * @return ResultBean
+     * @author yezhendong
+     * @date 2019/9/16
+     */
+    public static ResultBean error(ErrorCode errorCode) {
+        return new ResultBean(errorCode.getCode(), errorCode.getMessage());
+    }
 }

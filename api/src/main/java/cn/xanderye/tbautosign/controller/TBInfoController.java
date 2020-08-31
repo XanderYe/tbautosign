@@ -3,6 +3,7 @@ package cn.xanderye.tbautosign.controller;
 import cn.xanderye.tbautosign.entity.TBInfo;
 import cn.xanderye.tbautosign.service.TBInfoService;
 import cn.xanderye.tbautosign.base.ResultBean;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,21 +26,25 @@ public class TBInfoController {
         return new ResultBean<>(tbInfoPageInfo);
     }
 
-    @PostMapping("refresh/{tbid}")
-    public ResultBean refresh(@PathVariable long tbid) {
-        tbInfoService.refreshTBInfos(tbid);
+    @PostMapping("refresh")
+    public ResultBean refresh(@RequestBody JSONObject params) {
+        long tbUserId = params.getInteger("tbUserId");
+        tbInfoService.refreshTBInfos(tbUserId);
         return new ResultBean<>();
     }
 
-    @PostMapping("sign/{tbid}")
-    public ResultBean sign(@PathVariable long tbid) {
-        tbInfoService.signByTbid(tbid);
+    @PostMapping("sign")
+    public ResultBean sign(@RequestBody JSONObject params) {
+        Long tbUserId = params.getLong("tbUserId");
+        Long tid = params.getLong("tid");
+        tbInfoService.signByTbUserId(tbUserId, tid);
         return new ResultBean<>();
     }
 
 
-    @DeleteMapping("tid/{tid}")
-    public ResultBean delete(@PathVariable long tid) {
+    @PostMapping("delete")
+    public ResultBean delete(@RequestBody JSONObject params) {
+        long tid = params.getInteger("tid");
         tbInfoService.deleteTBInfo(tid);
         return new ResultBean<>();
     }

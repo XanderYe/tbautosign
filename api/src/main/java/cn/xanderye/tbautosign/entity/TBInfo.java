@@ -5,19 +5,19 @@ import lombok.Data;
 @Data
 public class TBInfo {
 
-    private int tid;
+    private Long tid;
 
     private String tiebaId;//贴吧ID
 
     private String title;
 
-    private int curScore = 0;
+    private Integer curScore = 0;
 
-    private int levelId = 1;
+    private Integer levelId = 1;
 
     private String levelName;
 
-    private int status;
+    private Integer status;
 
     private TBUser tbUser;
 

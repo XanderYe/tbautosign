@@ -1,10 +1,14 @@
 package cn.xanderye.tbautosign.controller;
 
 import cn.xanderye.tbautosign.base.RequestContextHolder;
+import cn.xanderye.tbautosign.config.CaptchaCache;
 import cn.xanderye.tbautosign.entity.User;
+import cn.xanderye.tbautosign.enums.ErrorCode;
+import cn.xanderye.tbautosign.exception.BusinessException;
 import cn.xanderye.tbautosign.service.UserService;
 import cn.xanderye.tbautosign.base.ResultBean;
 import cn.xanderye.tbautosign.VO.UserVo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +30,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private CaptchaCache captchaCache;
+
     @Value("${upload.root}")
     private String uploadRoot;
 
@@ -38,14 +45,21 @@ public class UserController {
     }
 
     @PostMapping("register")
-    public ResultBean register(HttpSession session, String username, String password, String verCode) {
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword(password);
-        String code = (String) session.getAttribute("captcha");
-        System.out.println("code "+code);
-        System.out.println("verCode "+verCode);
-        this.userService.register(user,code,verCode);
+    public ResultBean register(User user, String uuid, String verCode) {
+        String code = captchaCache.get(uuid);
+        this.userService.register(user, code, verCode);
+        return new ResultBean<>();
+    }
+
+    @GetMapping("check")
+    public ResultBean checkUser(String username) {
+        if (StringUtils.isEmpty(username)) {
+            throw new BusinessException(ErrorCode.PARAMETER_EMPTY);
+        }
+        User findUser = userService.findUserByUsername(username);
+        if (findUser != null) {
+            return ResultBean.error(ErrorCode.ACCOUNT_EXIST);
+        }
         return new ResultBean<>();
     }
 
@@ -65,11 +79,6 @@ public class UserController {
         userDto.setToken(user.getToken());
         userDto.setAvatar(user.getAvatar());
         return new ResultBean<>(userDto);
-    }
-
-    @GetMapping("id/{id}")
-    public ResultBean selectById(@PathVariable int id) {
-        return new ResultBean<>(this.userService.selectByUid(id));
     }
 
     /**
