@@ -40,6 +40,7 @@ NProgress.configure({
 router.beforeEach((to, from, next) => {
   // 进度条
   NProgress.start();
+  document.title = to.meta.title;
   next();
 });
 //当路由跳转结束后

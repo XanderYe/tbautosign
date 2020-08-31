@@ -19,7 +19,7 @@ import java.util.Map;
 
 /**
  * 声明式事务配置
- * @author 叶振东
+ * @author XanderYe
  * @date 2019-01-10
  */
 @Aspect

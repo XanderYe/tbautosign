@@ -34,23 +34,20 @@
           <mu-list-item-title>首页</mu-list-item-title>
         </mu-list-item>
 
-        <mu-list-item button nested :open="openItem === '贴吧管理'"
-                      @toggle-nested="openItem = arguments[0] ? '贴吧管理' : ''">
+        <mu-list-item button nested :open="openItem === item.title"
+                      @toggle-nested="openItem = arguments[0] ? item.title : ''" v-for="item in navList" :key="item.path">
           <mu-list-item-action>
             <mu-icon value="settings"></mu-icon>
           </mu-list-item-action>
-          <mu-list-item-title>贴吧管理</mu-list-item-title>
+          <mu-list-item-title>{{item.title}}</mu-list-item-title>
           <mu-list-item-action>
             <mu-icon class="toggle-icon" size="24" value="keyboard_arrow_down"></mu-icon>
           </mu-list-item-action>
 
-          <mu-list-item :class="isActived(setting.name)" button slot="nested" v-for="setting in tiebaSettingList"
-                        :key="setting.id"
-                        :to="{name: setting.routerName}" @click="changeNavName(setting.name)">
-            <mu-list-item-title>{{setting.name}}</mu-list-item-title>
+          <mu-list-item :class="isActived(setting.meta.title)" button slot="nested" v-for="setting in item.children" :key="setting.path"
+                        :to="{name: setting.name}" @click="changeNavName(setting.meta.title)">
+            <mu-list-item-title>{{setting.meta.title}}</mu-list-item-title>
           </mu-list-item>
-
-
         </mu-list-item>
 
       </mu-list>
@@ -219,7 +216,7 @@
           avatar: "/static/img/my.jpg",
           email: "XanderYe@outlook.com",
           github: "https://github.com/XanderYe",
-          description: "这里是一条咸鱼的贴吧自动签到程序",
+          description: "这里是一条咸鱼的贴吧签到助手",
           occupation: "java开发工程师"
         },
         topicList: [],
@@ -230,18 +227,7 @@
         openItem: "",
         // 导航栏名称
         appBarName: "首页",
-        tiebaSettingList: [
-          {
-            id: 1,
-            name: "百度ID管理",
-            routerName: "baidu-id"
-          },
-          {
-            id: 2,
-            name: "签到管理",
-            routerName: "manage"
-          },
-        ],
+        navList: [],
         // 用户菜单
         userMenu: false,
         // 菜单弹出绑定元素
@@ -509,6 +495,8 @@
       }
     },
     created() {
+      // 从路由列表获取菜单
+      this.navList = this.$router.options.routes.filter(route => !!route.title);
       // 设置当前页面名称
       this.openItem = sessionStorage.getItem("openItem") ? sessionStorage.getItem("openItem") : "";
       this.appBarName = sessionStorage.getItem("appBarName") ? sessionStorage.getItem("appBarName") : "首页";

@@ -16,6 +16,10 @@ export const router = new Router({
           path: 'index',
           title: '首页',
           name: 'index',
+          meta: {
+            title: '贴吧签到助手',
+            auth: true
+          },
           component: () => import('@/views/index.vue'),
         }
       ]
@@ -24,6 +28,7 @@ export const router = new Router({
       path: '/tieba',
       name: 'tieba',
       component: Main,
+      title: "贴吧管理",
       children: [
         {
           path: 'id',
@@ -43,6 +48,32 @@ export const router = new Router({
           },
           component: () => import('@/views/tieba/manage.vue'),
         },
+      ]
+    },
+    {
+      path: '/tool',
+      name: 'tool',
+      component: Main,
+      title: "小工具",
+      children: [
+        {
+          path: 'danmu',
+          name: 'danmu',
+          meta: {
+            title: '获取B站弹幕',
+            auth: true
+          },
+          component: () => import('@/views/tool/danmu.vue'),
+        },
+        {
+          path: 'avbv',
+          name: 'avbv',
+          meta: {
+            title: 'AVBV互转',
+            auth: true
+          },
+          component: () => import('@/views/tool/avbv.vue'),
+        }
       ]
     }
   ]

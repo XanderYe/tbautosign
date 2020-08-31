@@ -5,7 +5,7 @@ import org.slf4j.helpers.MessageFormatter;
 
 /**
  *
- * @author 叶振东
+ * @author XanderYe
  * @date 2018-11-05
  */
 public class BusinessException extends RuntimeException {

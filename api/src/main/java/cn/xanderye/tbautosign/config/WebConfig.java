@@ -33,7 +33,8 @@ public class WebConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/user/login")
                 .excludePathPatterns("/user/register")
                 .excludePathPatterns("/captcha")
-                .excludePathPatterns("/user/check");
+                .excludePathPatterns("/user/check")
+                .excludePathPatterns("/tool/**");
     }
 
     @Override
@@ -45,7 +46,7 @@ public class WebConfig implements WebMvcConfigurer {
      * 过滤器
      * @param
      * @return org.springframework.boot.web.servlet.FilterRegistrationBean
-     * @author yezhendong
+     * @author XanderYe
      * @date 2019/8/27
      */
     @Bean

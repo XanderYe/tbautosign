@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author 叶振东
+ * @author XanderYe
  * @date 2019-01-10
  */
 @Data
@@ -35,7 +35,7 @@ public class ResultBean<T> implements Serializable {
     /**
      * 成功
      * @return ResultBean
-     * @author yezhendong
+     * @author XanderYe
      * @date 2019/9/16
      */
     public static <T> ResultBean success(T data) {
@@ -46,7 +46,7 @@ public class ResultBean<T> implements Serializable {
      * 失败
      * @param errorCode
      * @return ResultBean
-     * @author yezhendong
+     * @author XanderYe
      * @date 2019/9/16
      */
     public static ResultBean error(ErrorCode errorCode) {

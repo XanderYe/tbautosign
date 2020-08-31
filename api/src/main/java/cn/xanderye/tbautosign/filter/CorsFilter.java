@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * @author 叶振东
+ * @author XanderYe
  * @date 2019-07-15
  */
 public class CorsFilter implements Filter {

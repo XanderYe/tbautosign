@@ -86,7 +86,7 @@ public class VerifyCodeUtil {
      * @param height
      * @param code
      * @return java.awt.image.BufferedImage
-     * @author yezhendong
+     * @author XanderYe
      * @date 2019/9/11
      */
     public static BufferedImage generateImage(int width, int height, String code) {

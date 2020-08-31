@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 
 /**
- * @author 叶振东
+ * @author XanderYe
  * @date 2019/8/27
  */
 @RestController
@@ -24,7 +24,7 @@ public class CaptchaController {
      * 验证码
      *
      * @return com.xander.mdblog.base.ResultBean
-     * @author yezhendong
+     * @author XanderYe
      * @date 2019-07-11
      */
     @GetMapping("captcha")

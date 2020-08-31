@@ -86,7 +86,7 @@ public class UserController {
      *
      * @param file
      * @return com.xander.mdblog.base.ResultBean
-     * @author yezhendong
+     * @author XanderYe
      * @date 2019-07-11
      */
     @PostMapping("uploadAvatar")

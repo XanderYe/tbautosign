@@ -11,7 +11,7 @@ public interface UserService {
      * 根据uid查询用户
      * @param uid
      * @return cn.xanderye.tbautosign.VO.UserVo
-     * @author yezhendong
+     * @author XanderYe
      * @date 2020/8/27
      */
     UserVo selectByUid(long uid);
@@ -20,7 +20,7 @@ public interface UserService {
      * 根据token查询用户
      * @param token
      * @return cn.xanderye.tbautosign.entity.User
-     * @author yezhendong
+     * @author XanderYe
      * @date 2020/8/27
      */
     User selectByToken(String token);
@@ -30,7 +30,7 @@ public interface UserService {
      * @param username
      * @param password
      * @return cn.xanderye.tbautosign.VO.UserVo
-     * @author yezhendong
+     * @author XanderYe
      * @date 2020/8/27
      */
     UserVo login(String username, String password);
@@ -41,7 +41,7 @@ public interface UserService {
      * @param code
      * @param verCode
      * @return void
-     * @author yezhendong
+     * @author XanderYe
      * @date 2020/8/27
      */
     void register(User user, String code, String verCode);
@@ -50,7 +50,7 @@ public interface UserService {
      * 更新用户信息
      * @param user
      * @return void
-     * @author yezhendong
+     * @author XanderYe
      * @date 2020/8/27
      */
     void updateUser(User user);
@@ -59,7 +59,7 @@ public interface UserService {
      * 根据用户名查找
      * @param username
      * @return cn.xanderye.tbautosign.entity.User
-     * @author yezhendong
+     * @author XanderYe
      * @date 2020/8/31
      */
     User findUserByUsername(String username);
