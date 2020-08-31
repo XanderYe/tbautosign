@@ -10,7 +10,7 @@
     </mu-form>
     <mu-button color="secondary" @click="resolve">解析</mu-button>
     <div v-show="show" style="margin-top : 40px">
-      <p><a href="#" target="_blank" id="comment-link-a">{{resLink}}</a></p>
+      <p><a :href="resLink" target="_blank">{{resLink}}</a></p>
       <p>请点击链接，并右键另存为</p>
       <p>弹幕转字幕工具：<a href="https://pan.baidu.com/s/1Az3pINb2vEaQlaj0YrvhsQ" target="_blank">Danmu2Ass</a></p>
       <p>推荐播放器：<a href="https://potplayer.org/" target="_blank">PotPlayer</a></p>
