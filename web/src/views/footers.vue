@@ -3,7 +3,7 @@
     <div class="footer-typo">
       <div class="footer-copyright">
         <p>Copyright © 2018 - 2020 <a href="http://xanderye.cn/">xanderye.cn</a> All rights reserved.</p>
-        <p><a href="http://www.beian.miit.gov.cn/" target="_blank">浙ICP备xxx号</a></p></div>
+        <p><a href="https://beian.miit.gov.cn/" target="_blank">浙ICP备xxx号</a></p></div>
     </div>
   </footer>
 </template>
