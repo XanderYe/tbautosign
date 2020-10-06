@@ -3,6 +3,7 @@ package cn.xanderye.tbautosign.controller;
 import cn.xanderye.tbautosign.base.ResultBean;
 import cn.xanderye.tbautosign.enums.ErrorCode;
 import cn.xanderye.tbautosign.exception.BusinessException;
+import cn.xanderye.tbautosign.util.WebpUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -12,10 +13,17 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.annotation.Resource;
+import javax.imageio.stream.FileImageInputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created on 2020/8/31.
@@ -26,8 +34,67 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("tool")
 public class ToolController {
+
+    @Value("${upload.root}")
+    private String uploadRoot;
+
+    @Value("${tool.tmp}")
+    private String toolTmp;
+
+    @Resource
+    private HttpServletResponse response;
+
+    private static final Map<String, String> EXT_MAP = new HashMap<String, String>() {{
+        put("jpg", "image/jpeg");
+        put("png", "image/png");
+    }};
+
+    /**
+     * webp转换
+     * @param file
+     * @param ext
+     * @return void
+     * @author XanderYe
+     * @date 2020/10/6
+     */
+    @PostMapping("webpConvert")
+    public void webpConvert(@RequestParam("webp") MultipartFile file, @RequestParam(name = "ext", defaultValue = "jpg") String ext) {
+        if (file.isEmpty()) {
+            throw new BusinessException(ErrorCode.PARAMETER_EMPTY);
+        }
+        if (!EXT_MAP.containsKey(ext.toLowerCase())) {
+            throw new BusinessException(ErrorCode.PARAMETER_ERROR);
+        }
+        OutputStream os = null;
+        File destFile = null;
+        try {
+            String fileName = UUID.randomUUID().toString() + ".webp";
+            String destFileName = uploadRoot + toolTmp + File.separator + fileName;
+            destFile = new File(destFileName);
+            destFile.getParentFile().mkdirs();
+            file.transferTo(destFile);
+            byte[] bytes = WebpUtil.webpToImage(destFile, ext);
+            os = response.getOutputStream();
+            response.setContentType(EXT_MAP.get(ext.toLowerCase()));
+            os.write(bytes);
+            os.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (os != null) {
+                    os.close();
+                }
+                destFile.delete();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     /**
      * 解析地址得到弹幕地址
+     *
      * @param params
      * @return cn.xanderye.tbautosign.base.ResultBean
      * @author XanderYe

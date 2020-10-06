@@ -95,6 +95,12 @@
             <artifactId>fastjson</artifactId>
             <version>1.2.62</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.luciad.imageio.webp</groupId>
+            <artifactId>webp-imageio</artifactId>
+            <version>0.4.2</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -108,4 +114,14 @@
         <finalName>tbautosign</finalName>
     </build>
 
+    <repositories>
+        <repository>
+            <id>rdc-releases</id>
+            <url>https://repo.rdc.aliyun.com/repository/122904-release-12oEjS/</url>
+        </repository>
+        <repository>
+            <id>rdc-snapshots</id>
+            <url>https://repo.rdc.aliyun.com/repository/122904-snapshot-ZoEvfQ/</url>
+        </repository>
+    </repositories>
 </project>
