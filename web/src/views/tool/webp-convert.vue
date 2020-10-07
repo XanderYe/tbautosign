@@ -6,7 +6,7 @@
       <mu-select label="格式" v-model="ext" style="margin-left: 20px; width: 150px">
         <mu-option v-for="item in exts" :key="item.id" :label="item.ext" :value="item.ext"></mu-option>
       </mu-select>
-      <mu-button color="secondary" @click="uploadWebp" style="margin-left: 20px;">转换webp</mu-button>
+      <mu-button color="secondary" v-loading="loading" data-mu-loading-size="24" @click="uploadWebp" style="margin-left: 20px;">转换webp</mu-button>
       <input ref="uploadWebp" hidden type="file" accept="image/webp" id="upload-webp" @change="getWebp($event)">
     </div>
     <div style="margin-top: 10px; float: left">
@@ -25,6 +25,7 @@
     name: "webp-convert",
     data() {
       return {
+        loading: false,
         file: null,
         imgUrl: null,
         targetImgUrl: null,
@@ -62,6 +63,7 @@
           this.$snackbar({message: "请上传图片"});
           return;
         }
+        this.loading = true;
         let form = new FormData;
         form.append("webp", this.file);
         form.append("ext", this.ext);
@@ -70,6 +72,7 @@
           let blob = new Blob([data], {type: headers['content-type']});
           this.blobToBase64(blob).then(res => {
             this.targetImgUrl = res;
+            this.loading = false;
           }).catch(err => {
             this.$snackbar({message: "图片转换错误"});
           })

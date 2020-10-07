@@ -10,7 +10,9 @@ import store from './store';
 import $ from 'jquery';
 import NProgress from 'nprogress';
 import snackbar from "./snackbar";
+import Loading from 'muse-ui-loading';
 
+import 'muse-ui-loading/dist/muse-ui-loading.css';
 import '@/css/cover-muse.css';
 import '@/css/desktop.css';
 import '@/css/index.css';
@@ -20,6 +22,7 @@ import '@/css/nprogress.css';
 
 Vue.config.productionTip = false;
 Vue.use(MuseUI);
+Vue.use(Loading);
 Vue.prototype.$requests = requests;
 Vue.prototype.$snackbar = snackbar;
 
@@ -103,6 +106,9 @@ new Vue({
 
         .manage .signed {
           color: ${theme.secondary};
+        }
+        .mu-circle-spinner {
+          border-color: ${theme.primary};
         }
       `;
     });
