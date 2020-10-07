@@ -63,7 +63,7 @@ export const router = new Router({
           name: 'danmu',
           meta: {
             title: '获取B站弹幕',
-            auth: true
+            auth: false
           },
           component: () => import('@/views/tool/danmu.vue'),
         },
@@ -72,9 +72,18 @@ export const router = new Router({
           name: 'avbv',
           meta: {
             title: 'AVBV互转',
-            auth: true
+            auth: false
           },
           component: () => import('@/views/tool/avbv.vue'),
+        },
+        {
+          path: 'webp-convert',
+          name: 'webp-convert',
+          meta: {
+            title: 'webp转换',
+            auth: false
+          },
+          component: () => import('@/views/tool/webp-convert.vue'),
         }
       ]
     }

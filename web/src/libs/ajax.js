@@ -53,6 +53,25 @@ const requests = {
     })
   },
 
+  postAndGetFile(url, param) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'post',
+        url,
+        data: param,
+        headers: {
+          "md-token": localStorage.getItem("mdToken")
+        },
+        responseType: 'blob'
+      }).then(res => {
+        resolve(res);
+      }).catch((res) => {
+        // this.error(res.data.status);
+        //console.log(res)
+      })
+    })
+  },
+
   //post请求
   upload(url, param) {
     return new Promise((resolve, reject) => {
