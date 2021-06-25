@@ -2,6 +2,7 @@ package cn.xanderye.tbautosign.util;
 
 import cn.xanderye.tbautosign.DTO.TBResult;
 import cn.xanderye.tbautosign.entity.TBInfo;
+import com.alibaba.fastjson.JSON;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,7 +11,6 @@ import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.*;
 
@@ -79,12 +79,12 @@ public class TBUtil {
      * @return
      */
     public static String getUserName(String BDUSS) {
-        String url = "http://wapp.baidu.com/";
+        String url = "https://tieba.baidu.com/mg/o/profile?format=json&eqid=&refer=";
         String userName = null;
-        Map<String, String> cookies = new HashMap<String, String>();
+        Map<String, String> cookies = new HashMap<>();
         String BAIDUID = null;
         try {
-            BAIDUID = MD5Util.encry(System.currentTimeMillis() / 1000L + "");
+            BAIDUID = MD5Util.encry(System.currentTimeMillis() / 1000L + "").toUpperCase();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -92,12 +92,12 @@ public class TBUtil {
         cookies.put("BAIDUID", BAIDUID);
         Document doc = getDoc(url, cookies);
         if (doc != null) {
+            String jsonStr = unicodeToUtf8(doc.text());
             try {
-                userName = URLDecoder.decode(doc.select("div.b").select("a").attr("href").split("un=")[1], "utf-8");
-            } catch (UnsupportedEncodingException e) {
-                userName = null;
-            } catch (ArrayIndexOutOfBoundsException ee) {
-                userName = null;
+                JSONObject res = new JSONObject(jsonStr);
+                userName = res.getJSONObject("data").getJSONObject("user").getString("name");
+            } catch (JSONException e) {
+
             }
         }
         return userName;
